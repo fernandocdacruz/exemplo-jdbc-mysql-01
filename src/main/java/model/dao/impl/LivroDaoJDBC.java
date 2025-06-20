@@ -2,7 +2,9 @@ package model.dao.impl;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 
 import db.DB;
@@ -42,8 +44,29 @@ public class LivroDaoJDBC implements LivroDao {
 
 	@Override
 	public List<Livro> listarLivros() {
-		// TODO Auto-generated method stub
-		return null;
+		PreparedStatement st = null;
+		ResultSet rs = null;
+		try {
+			st = conn.prepareStatement(
+					"select * from livros"
+					);
+			rs = st.executeQuery();
+			List<Livro> livros = new ArrayList<>();
+			while (rs.next()) {
+				Livro livro = new Livro();
+				livro.setId(rs.getInt("id"));
+				livro.setTitulo(rs.getString("titulo"));
+				livro.setAutor(rs.getString("autor"));
+				livro.setAno(rs.getInt("ano"));
+				livros.add(livro);
+			}
+			return livros;
+		} catch (SQLException e) {
+			throw new DbException(e.getMessage());
+		} finally {
+			DB.closeStatement(st);
+			DB.closeResultSet(rs);
+		}
 	}
 
 }
