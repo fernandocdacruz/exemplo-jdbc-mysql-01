@@ -1,0 +1,3 @@
+Programa completo. Utilizando jdbc para conexão de dados com o banco. 
+Servlet para se comunicar com o front end feito em jsp. 
+Somente adiciona e lista os objetos.
